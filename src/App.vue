@@ -1,29 +1,39 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="navbar sticky flex align-items-center text-white p-l-1 space-between p-r-1">
+      <div class="nav-left">
+        <router-link v-if="user.uid" to="/dashboard">Dashboard</router-link>
+        <router-link v-else to="/">Home</router-link>
+      </div>
+      <div class="nav-right">
+        <div v-if="!user.uid">
+          <router-link :to="{name: 'Login'}">Login</router-link>
+          <router-link :to="{name: 'Register'}">Register</router-link>
+        </div>
+        <div v-else>
+          <span>Hello {{user.displayName || user.email}}</span>
+          <span class="m-l-1" @click="logout"><i class="fa fa-fw fa-sign-out action muted"></i></span>
+        </div>
+      </div>
     </div>
-    <router-view/>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+  export default {
+    name: 'app',
+    computed: {
+      user() {
+        return this.$store.state.auth.user
+      }
+    },
+    methods: {
+      logout() {
+        this.$store.dispatch('logout')
+      }
     }
   }
-}
-</style>
+</script>

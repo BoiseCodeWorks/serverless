@@ -1,6 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from './store'
+
+let views = ['Login', 'Register']
+
+function loadViews(views) {
+  return views.map(v => {
+    return {
+      path: '/' + v,
+      name: v,
+      // which is lazy-loaded when the route is visited.
+      component() {
+        return import('./views/' + v + '.vue')
+      }
+    }
+  })
+}
 
 Vue.use(Router)
 
@@ -11,13 +27,22 @@ export default new Router({
       name: 'home',
       component: Home
     },
+    ...loadViews(views),
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/dashboard',
+      name: 'Dashboard',
+      beforeEnter(to, from, next) {
+        // @ts-ignore
+        if (store.state.auth.user.uid) {
+          return next()
+        }
+        next('/login')
+      },
+      component() { return import('./views/Dashboard.vue') }
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

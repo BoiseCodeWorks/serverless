@@ -1,0 +1,14 @@
+.fade-enter {
+  transition: all .3s ease-out;
+  opacity: 0;
+}
+
+.fade-enter-to {
+  transition-delay: .3s;
+}
+
+.fade-leave-to {
+  transition: all .3s ease-in;
+  transform: rotate(540deg) scale(2);
+  opacity: 0;
+}
