@@ -15,7 +15,7 @@ export default {
     register({ commit, dispatch }, user) {
       firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then(res => {
-          router.push("/dashboard")
+          router.push("/dashboard/vaults")
           commit("setUser", res.user)
           firebase.auth().currentUser.updateProfile({ displayName: user.displayName })
             .then(res => {
@@ -52,7 +52,7 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           commit("setUser", user || {})
-          router.push('/dashboard')
+          router.push('/dashboard/vaults')
         } else {
           router.push('/login')
         }

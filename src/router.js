@@ -38,7 +38,16 @@ export default new Router({
         }
         next('/login')
       },
-      component() { return import('./views/Dashboard.vue') }
+      component() { return import('./views/Dashboard.vue') },
+      children: [{
+        path: 'vaults',
+        name: 'Dashboard.Vaults',
+        component() { return import('./components/dashboard/MyVaults') }
+      }, {
+        path: 'keeps',
+        name: 'Dashboard.Keeps',
+        component() { return import('./components/dashboard/MyKeeps') }
+      }]
     },
     {
       path: '*',
