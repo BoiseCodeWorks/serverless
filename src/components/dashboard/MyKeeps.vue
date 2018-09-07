@@ -1,8 +1,8 @@
 <template>
   <div class="my-keeps">
-    <div class="flex space-between align-items center">
+    <div class="flex space-between align-items-center">
       <h3>My Keeps</h3>
-      <i @click="showCreate = !showCreate" class="fa fa-fw action muted" :class="{'fa-plus-square': !showCreate, 'fa-minus-square': showCreate}"></i>
+      <i @click="showCreate = !showCreate" class="fa fa-lg fa-fw action muted" :class="{'fa-plus-square': !showCreate, 'fa-minus-square': showCreate}"></i>
     </div>
     <div class="create-keep slide-down" :class="{open: showCreate}">
       <form @submit.prevent="createKeep">
@@ -26,7 +26,7 @@
       <div class="keep col l3 m4" v-for="keep in myKeeps">
         <keep :keep="keep">
           <div slot="actions">
-            Actions here
+            <i class="fa fa-fw fa-cloud action muted" @click="keep.public = !keep.public; updateKeep(keep);" :class="{'text-red': !keep.public, 'text-green': keep.public}"></i>
           </div>
         </keep>
       </div>
@@ -57,6 +57,11 @@
         this.newKeep.creatorId = this.user.uid
         this.newKeep.views = 0
         this.$store.dispatch('create', { collection: 'keeps', data: this.newKeep })
+        this.showCreate = false;
+        this.newKeep = {}
+      },
+      updateKeep(keep) {
+        this.$store.dispatch('update', { collection: 'keeps', data: keep })
       }
     },
     components: {
@@ -66,4 +71,10 @@
 </script>
 
 <style>
+  [type="checkbox"]:not(:checked),
+  [type="checkbox"]:checked {
+    position: unset;
+    opacity: unset;
+    pointer-events: unset;
+  }
 </style>

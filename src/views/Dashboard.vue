@@ -28,5 +28,13 @@
 <script>
   export default {
     name: 'Dashboard',
+    mounted() {
+      this.$store.dispatch('getUserData', this.user)
+    },
+    computed: {
+      user() {
+        return this.$store.state.auth.user
+      }
+    }
   }
 </script>

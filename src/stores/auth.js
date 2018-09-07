@@ -52,6 +52,7 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           commit("setUser", user || {})
+          dispatch('addNotification', { type: 'success', message: 'Welcome ' + user.email })
           router.push('/dashboard/vaults')
         } else {
           router.push('/login')

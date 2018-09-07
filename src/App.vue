@@ -1,9 +1,10 @@
 <template>
   <div id="app">
+    <notifications></notifications>
     <div class="navbar sticky flex align-items-center text-white p-l-1 space-between p-r-1">
       <div class="nav-left">
-        <router-link v-if="user.uid" to="/dashboard">Dashboard</router-link>
-        <router-link v-else to="/">Home</router-link>
+        <router-link to="/">Home
+        </router-link>
       </div>
       <div class="nav-right">
         <div v-if="!user.uid">
@@ -12,6 +13,7 @@
         </div>
         <div v-else>
           <span>Hello {{user.displayName || user.email}}</span>
+          <router-link to="/dashboard">Dashboard</router-link>
           <span class="m-l-1" @click="logout"><i class="fa fa-fw fa-sign-out action muted"></i></span>
         </div>
       </div>
@@ -23,8 +25,12 @@
 </template>
 
 <script>
+  import Notifications from './components/Notifications'
   export default {
     name: 'app',
+    mounted() {
+      this.$store.dispatch('get', { collection: 'keeps' })
+    },
     computed: {
       user() {
         return this.$store.state.auth.user
@@ -34,6 +40,9 @@
       logout() {
         this.$store.dispatch('logout')
       }
+    },
+    components: {
+      Notifications
     }
   }
 </script>

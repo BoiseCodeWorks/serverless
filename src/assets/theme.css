@@ -671,3 +671,17 @@
   .border-5 {
     border: var(--border);
   }
+
+  .slide-down{
+    transition: all .3s linear;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .slide-down.open{
+    height: unset;
+    visibility: unset;
+    pointer-events: all;
+    opacity: 1;
+  }

@@ -47,6 +47,10 @@ export default new Router({
         path: 'keeps',
         name: 'Dashboard.Keeps',
         component() { return import('./components/dashboard/MyKeeps') }
+      }, {
+        path: 'vaults/:id',
+        name: 'Dashboard.Vault',
+        component() { return import('./components/dashboard/Vault') }
       }]
     },
     {
