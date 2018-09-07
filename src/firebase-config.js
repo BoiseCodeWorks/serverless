@@ -8,7 +8,7 @@ let config = {
   storageBucket: "",
   messagingSenderId: "355482981360"
 };
-
+//FIXME: dont forget to use your 
 const firebaseApp = firebase.initializeApp(config)
 const firestore = firebaseApp.firestore()
 const settings = {

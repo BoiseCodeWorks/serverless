@@ -26,6 +26,7 @@ export default {
     },
     actions: {
         create({ commit, dispatch }, payload) {
+            //fetch('url').then(res => res.json()).then(data => commit('addResource', data))
             DB.collection(payload.collection).add(payload.data)
                 .then(doc => {
                     dispatch("addNotification", { type: "success", message: `${payload.collection} created!` })
@@ -63,6 +64,8 @@ export default {
             })
         },
         getVault({ commit, dispatch }, vaultId) {
+            //TODO: this doesnt work here
+            //FIXME: im broke
             DB.collection("vaults").doc(vaultId).get()
                 .then(doc => {
                     let vault = doc.data()

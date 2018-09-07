@@ -3,7 +3,8 @@
     <notifications></notifications>
     <div class="navbar sticky flex align-items-center text-white p-l-1 space-between p-r-1">
       <div class="nav-left">
-        <router-link to="/">Home
+        <router-link to="/">
+          Home
         </router-link>
       </div>
       <div class="nav-right">

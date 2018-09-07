@@ -1,0 +1,48 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // match /{document=**} {
+    //   allow read, write;
+    // }
+    
+    function isPublic(){
+    	return resource.data.public == true;
+    }
+    
+    function isOwner(){
+    	return request.auth.uid == resource.data.creatorId;
+    }
+    
+    function signedIn() {
+      return request.auth.uid != null;
+    }
+    
+    function signedInIsCreator(){
+    	return request.auth.uid == request.resource.data.creatorId;
+    }
+    
+    function updatingViewsOrOwner(){
+    	return !request.resource.keys().hasAny(["views"]) || isOwner() && !request.resource.keys().hasAny(["views"]);
+    }
+    
+    function updatingKeepsOrOwner(){
+    	return (request.writeFields.size() == 1 && 'keeps' in request.writeFields) || (isOwner() && !('keeps' in request.writeFields));
+    }
+    
+    match /keeps/{keep}{
+    	allow read: if isOwner() || isPublic();
+      allow create: if signedInIsCreator();
+      allow update: if updatingViewsOrOwner(); 
+      // allow update;
+      allow delete: if isOwner();
+    }
+    
+    match /vaults/{vault}{
+    	allow read: if isOwner() || isPublic();
+      allow create: if signedInIsCreator();
+      allow update;
+      // allow update: if updatingViewsOrOwner(); 
+      allow delete: if isOwner();
+    }
+  }
+}
